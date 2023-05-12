@@ -8,11 +8,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 def recommend(shoe):
-    url = "https://spring-store-api.herokuapp.com/api/products/pageable?page=0&size=10000"
+    url = "https://spring-store-api.herokuapp.com/api/products/active"
     response = urlopen(url)
     data_json = json.loads(response.read())
     # print(data_json)
-    data_file = data_json['content']
+    # data_file = data_json['content']
+    data_file = data_json
     df = pd.json_normalize(data_file, max_level=1)
     # print(df)
     cv = CountVectorizer(max_features=5000,stop_words='english')
