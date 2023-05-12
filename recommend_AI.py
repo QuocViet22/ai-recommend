@@ -10,23 +10,19 @@ response = urlopen(url)
 data_json = json.loads(response.read())
 # print(data_json)
 data_file = data_json['content']
-df = pd.json_normalize(data_file, max_level=1)
-# print(df)
-df.to_csv('./input/output.csv', index=False, encoding='utf-8')
+df = pd.json_normalize(data_file)
 
-shoes = pd.read_csv('./input/output.csv')
-new = shoes.drop(columns=['createdBy','createdDate','modifiedBy','modifiedDate','status','images','productInfors'])
 cv = CountVectorizer(max_features=5000,stop_words='english')
 # vector.shape
-vector = cv.fit_transform(new['description']).toarray()
+vector = cv.fit_transform(df['description']).toarray()
 similarity = cosine_similarity(vector)
 # similarity
 def recommend(shoe):
-    index = new[new['name'] == shoe].index[0]
+    index = df[df['name'] == shoe].index[0]
     distances = sorted(list(enumerate(similarity[index])),reverse=True,key = lambda x: x[1])
     s = ""
     for i in distances[1:6]:
-        s = s + str(new.iloc[i[0]].id) + ","
-        print (new.iloc[i[0]].id)
+        s = s + str(df.iloc[i[0]].id) + ","
+        print (df.iloc[i[0]].id)
     return s
 # print(recommend("Adidas NMD"))
