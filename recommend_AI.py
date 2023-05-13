@@ -8,12 +8,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 def recommend(shoe):
-    url = "https://spring-store-api.herokuapp.com/api/products/active"
+    url = "https://spring-store-api.herokuapp.com/api/products"
     response = urlopen(url)
     data_json = json.loads(response.read())
     # print(data_json)
     # data_file = data_json['content']
     data_file = data_json
+    data_file = list(filter(lambda dictionary: dictionary['status'] == "1",data_file))
     df = pd.json_normalize(data_file, max_level=1)
     # print(df)
     cv = CountVectorizer(max_features=5000,stop_words='english')
@@ -27,6 +28,6 @@ def recommend(shoe):
     s = ""
     for i in distances[1:6]:
         s = s + str(df.iloc[i[0]].id) + ","
-        print (df.iloc[i[0]].id)
+        # print (df.iloc[i[0]].id)
     return s
-# print(recommend("Adidas NMD"))
+print(recommend("Adidas NMD"))
