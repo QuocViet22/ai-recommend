@@ -30,4 +30,4 @@ def recommend(shoe):
         s = s + str(df.iloc[i[0]].id) + ","
         # print (df.iloc[i[0]].id)
     return s
-print(recommend("Adidas NMD"))
+# print(recommend("Adidas NMD"))
